@@ -5,7 +5,7 @@ import argparse
 LLVM_ROOT="./llvm-project-10.0.1/"
 CLANG=LLVM_ROOT + "build/bin/clang"
 PASS_LIB="./build/libBasicBlockID.so"
-DEFAULT="./test.c"
+DEFAULT="./sample/sample.c"
 
 
 def error(msg) :
@@ -44,7 +44,7 @@ def main() :
     print(src)
     if not os.path.exists(src) :
         error("No source input")
-    cmds += ['-c', src]
+    cmds += [src]
 
     ## output
     if args.output :
