@@ -16,11 +16,18 @@ BasicBlockIDPass::linearID(void) {
     return (prefix + count++); 
 }
 
+bool
+BasicBlockIDPass::doInitialization(Module &M) {
+    LLVMContext& C = M.getContext() ;
+    M.getOrInsertFunction("printf", FunctionType::get(Type::getInt32Ty(C), true));
+    return false; 
+}
 
 bool 
 BasicBlockIDPass::runOnFunction(Function &F) {
     for ( Function::iterator it = F.begin(); it != F.end() ; ++it ) {
-        runOnBasicBlock(*it) ;
+        if ( !it->empty() )
+            runOnBasicBlock(*it) ;
     }
     return true ;
 
