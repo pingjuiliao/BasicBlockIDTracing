@@ -3,10 +3,11 @@ This little project assigns IDs to the each basic blocks and print it  .
 It requires LLVM 10.0.1 and a compatible **clang** to build the project  
 
 ### setup
-The following command build LLMV framework, clang, and the pass.
+The following command build LLVM framework, clang, and the pass.  
+THIS TAKES HOURS !
 ```
 # in the root of repo
-./setup.py
+./setup.py # 
 ```
 
 ### compile a program with instrumentation
@@ -16,7 +17,7 @@ The following command build LLMV framework, clang, and the pass.
 # and we will get a compiled binary ./a.out in this directory
 ```
 
-## outputs
+### outputs
 The execution path determines the set/order of IDs of basic blocks.  
 
 ```
@@ -66,3 +67,5 @@ This basic block ID is 10
 Alice
 This basic block ID is 15
 ```
+
+
