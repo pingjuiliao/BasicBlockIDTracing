@@ -1,9 +1,13 @@
 
 #include "pass.h"
+#include "llvm/IR/Constants.h"
 #include "llvm/IR/Function.h"
 #include "llvm/IR/LegacyPassManager.h"
 #include "llvm/IR/Instructions.h"
 #include "llvm/IR/IRBuilder.h"
+#include "llvm/IR/GlobalVariable.h"
+#include "llvm/IR/GlobalValue.h"
+#include "llvm/IR/Type.h"
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/Transforms/IPO/PassManagerBuilder.h"
 #include "llvm/ADT/SmallVector.h"
@@ -19,7 +23,10 @@ BasicBlockIDPass::linearID(void) {
 bool
 BasicBlockIDPass::doInitialization(Module &M) {
     LLVMContext& C = M.getContext() ;
-    M.getOrInsertFunction("printf", FunctionType::get(Type::getInt32Ty(C), true));
+    // xor space
+    IntegerType* ty = IntegerType::getInt32Ty(C); 
+    Constant* zero  = ConstantInt::get(IntegerType::getInt32Ty(C), 0) ;
+    xor_space = new GlobalVariable(M, ty, false, GlobalValue::CommonLinkage, zero, "__LLVM_xor_u32");
     return false; 
 }
 
@@ -38,28 +45,28 @@ BasicBlockIDPass::runOnBasicBlock(BasicBlock &B) {
     Instruction *pi = B.getFirstNonPHI() ;
     Module* M = pi->getModule() ;
     LLVMContext& C = pi->getContext() ;
-    FunctionCallee func_printf = M->getFunction("printf");
     
     // start building IRs
     IRBuilder<> IRB(pi) ;
     
-    // alloca %x
+    // alloca
     unsigned addr = 0 ;
-    AllocaInst* alloc = IRB.CreateAlloca(Type::getInt64Ty(C), addr);
+    AllocaInst* xorspace = IRB.CreateAlloca(IntegerType::getInt32Ty(C), addr);
 
-    // store Constant, %x
+    // load %x
+    LoadInst* ld = IRB.CreateLoad(xor_space) ;
+    
+    // xor %x, $id
     BasicBlockIDPass::BBID bbid = linearID() ;
-    Constant* id = IRB.getInt64(bbid) ;
-    IRB.CreateStore(id, alloc);
-
-    // %y = load %x
-    LoadInst* load_id = IRB.CreateLoad(alloc) ;
+    Constant* id = IRB.getInt32(bbid) ;
+    Value* xor1 = IRB.CreateXor(ld, id);
+    
+    // xor %x, $id 
+    Value* xor2 = IRB.CreateXor(xor1, id);
+    
+    // store
+    StoreInst* store = IRB.CreateStore(xor2, xor_space) ;
      
-
-    // call printf(".." , y)
-    Value* fmt_str = IRB.CreateGlobalStringPtr("This basic block ID is %lld\n") ;
-    SmallVector<Value *, 2> args_printf({fmt_str, load_id});
-    CallInst* call_printf = IRB.CreateCall(func_printf, args_printf) ;
     
 
 }
