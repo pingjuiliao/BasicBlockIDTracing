@@ -46,7 +46,7 @@ def build_pass() :
 
 def main() :
     build_llvm()
-    build_pass()
+    # build_pass()
     print("Done !")
 
 if __name__ == '__main__' :

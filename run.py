@@ -32,12 +32,7 @@ def main() :
         error("Please build pass first")
 
     args = parser.parse_args()
-    cmds = [CLANG,
-            "-Xclang",
-            "-load",
-            "-Xclang",
-            PASS_LIB,
-            ]
+    cmds = [CLANG]
 
     ## source code
     src = args.source if args.source else DEFAULT
