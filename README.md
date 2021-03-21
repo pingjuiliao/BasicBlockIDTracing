@@ -22,11 +22,9 @@ THIS TAKES HOURS !
 ```
 
 ### scripts
-main script:  
-[a relative link] llvm-project-10.0.1/llvm/lib/Target/X86/X86BasicBlockID.cpp  
-modified:  
-[a relative link] llvm-project-10.0.1/llvm/lib/Target/X86/X86TargetMachine.cpp  
-[a relative link] llvm-project-10.0.1/llvm/lib/Target/X86/X86.h  
-[a relative link] llvm-project-10.0.1/llvm/lib/Target/X86/CMakeLists.txt  
+[X86BasicBlockID.cpp](llvm-project-10.0.1/llvm/lib/Target/X86/X86BasicBlockID.cpp)
+[X86TargetMachine.cpp](llvm-project-10.0.1/llvm/lib/Target/X86/X86TargetMachine.cpp)
+[X86.h](llvm-project-10.0.1/llvm/lib/Target/X86/X86.h)
+[CMakeLists.txt](llvm-project-10.0.1/llvm/lib/Target/X86/CMakeLists.txt)
 
 
