@@ -9,7 +9,7 @@ set(LLVM_BUILD_DIR ${LLVM_ROOT_DIR}/build)
 
 # clang 10
 set(CMAKE_CXX_COMPILER "${LLVM_BUILD_DIR}/bin/clang++")
-set(CMAKE_CC_COMPILER "${LLVM_BUILD_DIR}/bin/clang")
+set(CMAKE_C_COMPILER "${LLVM_BUILD_DIR}/bin/clang")
 
 find_package(LLVM PATHS ${LLVM_BUILD_DIR}
     NO_DEFAULT_PATH NO_CMAKE_FIND_ROOT_PATH)
