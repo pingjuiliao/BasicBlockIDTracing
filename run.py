@@ -5,6 +5,7 @@ import argparse
 LLVM_ROOT="./llvm-project-10.0.1/"
 CLANG=LLVM_ROOT + "build/bin/clang"
 PASS_LIB="./build/libBasicBlockID.so"
+BBID_LIB="./build/libBBID.so"
 DEFAULT="./sample/sample.c"
 
 
@@ -53,6 +54,13 @@ def main() :
         cmds += ['-o', args.output]
 
     print("Punch it !")
+
+    cmds += [
+            "-Lbuild/script",
+            "-lBBID",
+            "-Wl,-rpath,build/script"
+            ]
+
     os.system(' '.join(cmds))
 
 

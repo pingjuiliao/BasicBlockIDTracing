@@ -46,27 +46,12 @@ BasicBlockIDPass::runOnBasicBlock(BasicBlock &B) {
     Module* M = pi->getModule() ;
     LLVMContext& C = pi->getContext() ;
     
+    
     // start building IRs
     IRBuilder<> IRB(pi) ;
-    
-    // alloca
-    unsigned addr = 0 ;
-    AllocaInst* xorspace = IRB.CreateAlloca(IntegerType::getInt32Ty(C), addr);
-
-    // load %x
-    LoadInst* ld = IRB.CreateLoad(xor_space) ;
-    
-    // xor %x, $id
-    BasicBlockIDPass::BBID bbid = linearID() ;
-    Constant* id = IRB.getInt32(bbid) ;
-    Value* xor1 = IRB.CreateXor(ld, id);
-    
-    // xor %x, $id 
-    Value* xor2 = IRB.CreateXor(xor1, id);
-    
-    // store
-    StoreInst* store = IRB.CreateStore(xor2, xor_space) ;
-     
+    auto *voidT = IRB.getVoidTy();
+    FunctionCallee func_BB_linearID = M->getOrInsertFunction("_bbid_linear", voidT);
+    IRB.CreateCall(func_BB_linearID);
     
 
 }
