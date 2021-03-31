@@ -50,8 +50,11 @@ BasicBlockIDPass::runOnBasicBlock(BasicBlock &B) {
     // start building IRs
     IRBuilder<> IRB(pi) ;
     auto *voidT = IRB.getVoidTy();
-    FunctionCallee func_BB_linearID = M->getOrInsertFunction("_bbid_linear", voidT);
-    IRB.CreateCall(func_BB_linearID);
+    auto *int32T = IRB.getInt32Ty();
+    FunctionCallee func_BB_linearID = M->getOrInsertFunction("_bbid_linear", voidT, int32T);
+    BasicBlockIDPass::BBID bbid = linearID();
+    Constant* const_bbid = IRB.getInt32(bbid) ;
+    IRB.CreateCall(func_BB_linearID, const_bbid);
     
 
 }
