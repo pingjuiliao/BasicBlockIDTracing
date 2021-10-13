@@ -32,6 +32,7 @@ BasicBlockIDPass::doInitialization(Module &M) {
 
 bool 
 BasicBlockIDPass::runOnFunction(Function &F) {
+    errs() << F.getName() << "\n" ;
     for ( Function::iterator it = F.begin(); it != F.end() ; ++it ) {
         if ( !it->empty() )
             runOnBasicBlock(*it) ;
